@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.leo.pd.mapper.AmpereDataMapper">
+
+    <resultMap id="sensorResultMap" type="com.leo.pd.entity.AmpereData">
+        <result property="userIotDevId" column="user_iot_dev_id"></result>
+        <result property="port" column="port"></result>
+        <result property="senseData" column="sd"></result>
+    </resultMap>
+
+    <select id="getMonthSenseData" resultMap="sensorResultMap">
+        select user_iot_dev_id, port, (sense_data / min_count * 110 * (min_count / 60) / 1000) sd
+        from amp_data
+        where user_iot_dev_id = #{userIotDevId}
+          and `port` = #{port}
+          and `year` = #{year} AND `month` = #{month};
+    </select>
+</mapper>
